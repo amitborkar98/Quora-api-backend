@@ -1,5 +1,7 @@
 package com.upgrad.quora.service.exception;
 
+import org.springframework.http.ResponseEntity;
+
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
