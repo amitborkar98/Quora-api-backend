@@ -19,7 +19,6 @@ public class UserDao {
         return user;
     }
 
-
     public userEntity getUserByEmail(final String email) {
         try {
             return entityManager.createNamedQuery("userByEmail", userEntity.class).setParameter("email", email).getSingleResult();
@@ -45,6 +44,16 @@ public class UserDao {
         }
     }
 
+    public userEntity deleteUser(final String uuid){
+        try {
+            userEntity user=entityManager.createNamedQuery("userByid", userEntity.class).setParameter("uuid", uuid).getSingleResult();
+            entityManager.remove(user);
+            return user;
+        }
+        catch (NoResultException nre){
+            return null;
+        }
+    }
 
     public userAuthEntity createAuthToken(final userAuthEntity userAuthEntity) {
         entityManager.persist(userAuthEntity);
