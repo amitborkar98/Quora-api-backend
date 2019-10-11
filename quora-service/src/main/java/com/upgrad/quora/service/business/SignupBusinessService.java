@@ -26,11 +26,11 @@ public class SignupBusinessService {
         final userEntity userByUsername = userDao.getUserByUsername(user.getUsername());
         if(userByUsername !=null)
         {
-            throw new SignUpRestrictedException("SGR-001","Try any other Username, this Username has already been taken.");
+            throw new SignUpRestrictedException("SGR-001","Try any other Username,this Username has already been taken.");
         }
         else if(userByEmail != null)
         {
-            throw new SignUpRestrictedException("SGR-002","This user has already been registered, try with any other emailId");
+            throw new SignUpRestrictedException("SGR-002","This user has already been registered,try with any other emailId");
         }
         else {
             String[] encryptedText = passwordCryptographyProvider.encrypt(user.getPassword());
