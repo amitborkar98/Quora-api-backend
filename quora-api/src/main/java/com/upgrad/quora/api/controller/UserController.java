@@ -60,10 +60,12 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST,path = "/user/signin", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<SigninResponse> signin(@RequestHeader("authorization") final String authorization) throws AuthenticationFailedException {
 
+        //decoding the username and password from the authorization RequestHeader
         byte[] decode = Base64.getDecoder().decode(authorization);
         String decodedText = new String(decode);
         String[] decodedArray = decodedText.split(":");
 
+        //passing the username and password to the signupBusinessService
         userAuthEntity token = signinBusinessService.login(decodedArray[0], decodedArray[1]);
         userEntity user = token.getUser();
 

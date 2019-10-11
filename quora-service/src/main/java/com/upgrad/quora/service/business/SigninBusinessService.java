@@ -24,10 +24,12 @@ public class SigninBusinessService {
     public userAuthEntity login(final String username,final String password) throws AuthenticationFailedException {
 
         userEntity user = userDao.getUserByUsername(username);
+        //if the username is invalid AuthenticationFailedException is thrown
         if (user == null) {
             throw new AuthenticationFailedException("ATH-001","This username does not exist");
         }
         final String encryptedPassword = passwordCryptographyProvider.encrypt(password,user.getSalt());
+        //if password matches then authToken is created for the user and registered in the database
         if(encryptedPassword.equals(user.getPassword())) {
 
             userAuthEntity userAuthToken = new userAuthEntity();
@@ -42,6 +44,7 @@ public class SigninBusinessService {
             userDao.createAuthToken(userAuthToken);
             return userAuthToken;
         }
+        //if password does not match, AuthenticationFailedException is thrown
         else {
             throw new AuthenticationFailedException("ATH-002", "Password failed");
         }
