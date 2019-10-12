@@ -1,12 +1,10 @@
 package com.upgrad.quora.api.controller;
 
 import com.upgrad.quora.api.model.*;
-import com.upgrad.quora.service.business.QuestionCreateBusinessService;
-import com.upgrad.quora.service.business.QuestionDeleteService;
-import com.upgrad.quora.service.business.QuestionEditService;
-import com.upgrad.quora.service.business.QuestionGetBusinessService;
+import com.upgrad.quora.service.business.*;
 import com.upgrad.quora.service.exception.AuthorizationFailedException;
 import com.upgrad.quora.service.exception.InvalidQuestionException;
+import com.upgrad.quora.service.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -87,6 +85,23 @@ public class QuestionController {
 
         QuestionEditResponse questionEditResponse=new QuestionEditResponse().id(question.getUuid()).status("QUESTION EDITED");
         return new ResponseEntity<QuestionEditResponse>(questionEditResponse,HttpStatus.OK);
+    }
+
+    @Autowired
+    QuestionByUserBusinessService questionByUserBusinessService;
+
+    @RequestMapping(method = RequestMethod.GET, path = "/question/all/{userId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<QuestionDetailsResponse> getQuestionOfUser(@RequestHeader("authorization") final String authorization,
+                                                                     @PathVariable("userId") String userId)
+            throws AuthorizationFailedException, UserNotFoundException {
+
+        List<questionEntity> userQuestions= questionByUserBusinessService.getQuestions(authorization,userId);
+
+        for (questionEntity s : userQuestions) {
+            QuestionDetailsResponse questionDetailsResponse = new QuestionDetailsResponse().id(s.getUuid()).content(s.getContent());
+            return new ResponseEntity<QuestionDetailsResponse>(questionDetailsResponse, HttpStatus.OK);
+        }
+        return null;
     }
 }
 
