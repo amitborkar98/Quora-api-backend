@@ -31,10 +31,12 @@ public class QuestionByUserBusinessService {
         if(token.getLogoutAt()!= null){
             throw new AuthorizationFailedException("ATHR-002","User is signed out.Sign in first to get user details");
         }
+        //if the user is not present in the database UserNotFound Exception is thrown
         userEntity user = userDao.getUserById(userId);
         if(user == null){
             throw new UserNotFoundException("USR-001","User with entered uuid whose question details are to be seen does not exist");
         }
+        //else the questions asked by a specific user are returned to the controller
         return user.getQuestions();
     }
 }

@@ -32,9 +32,8 @@ public class QuestionGetBusinessService {
         if(token.getLogoutAt()!= null){
             throw new AuthorizationFailedException("ATHR-002","User is signed out.Sign in first to get user details");
         }
-
+        //else the list of all the questions in the database is returned to the controller
         List<questionEntity> questions= questionDao.getQuestions();
-
         return questions;
     }
 }

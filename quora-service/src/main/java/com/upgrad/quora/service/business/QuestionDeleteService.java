@@ -38,10 +38,12 @@ public class QuestionDeleteService {
         if(question==null){
             throw new InvalidQuestionException("QUES-001","Entered question uuid does not exist");
         }
+        //if the user of the question is the logged in user or the role of the user is admin the question is deleted from the database
         if(question.getUser() == user || user.getRole().equals("admin")){
             questionDao.deleteQuestion(question);
             return question;
         }
+        //else AuthorizationFailedException is thrown
         throw new AuthorizationFailedException("ATHR-003","Only the question owner or admin can delete the question");
     }
 }
