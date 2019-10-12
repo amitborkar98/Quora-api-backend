@@ -1,11 +1,9 @@
 package com.upgrad.quora.api.controller;
 
-import com.upgrad.quora.api.model.QuestionDeleteResponse;
-import com.upgrad.quora.api.model.QuestionDetailsResponse;
-import com.upgrad.quora.api.model.QuestionRequest;
-import com.upgrad.quora.api.model.QuestionResponse;
+import com.upgrad.quora.api.model.*;
 import com.upgrad.quora.service.business.QuestionCreateBusinessService;
 import com.upgrad.quora.service.business.QuestionDeleteService;
+import com.upgrad.quora.service.business.QuestionEditService;
 import com.upgrad.quora.service.business.QuestionGetBusinessService;
 import com.upgrad.quora.service.exception.AuthorizationFailedException;
 import com.upgrad.quora.service.exception.InvalidQuestionException;
@@ -71,6 +69,26 @@ public class QuestionController {
         QuestionDeleteResponse questionDeleteResponse=new QuestionDeleteResponse().id(question.getUuid()).status("QUESTION DELETED");
         return  new ResponseEntity<QuestionDeleteResponse>(questionDeleteResponse,HttpStatus.OK);
     }
+
+    @Autowired
+    QuestionEditService questionEditService;
+
+    @RequestMapping(method = RequestMethod.PUT,path = "/question/edit/{questionId}",produces =MediaType.APPLICATION_JSON_UTF8_VALUE )
+    public ResponseEntity<QuestionEditResponse> editQuestion(final QuestionEditRequest questionEditRequest,
+                                                             @RequestHeader("authorization") final String authorization,
+                                                             @PathVariable("questionId") String questionId)
+            throws AuthorizationFailedException, InvalidQuestionException {
+
+        questionEntity editQuestion = new questionEntity();
+        editQuestion.setUuid(questionId);
+        editQuestion.setContent(questionEditRequest.getContent());
+
+        questionEntity question = questionEditService.editQuestion(authorization, editQuestion);
+
+        QuestionEditResponse questionEditResponse=new QuestionEditResponse().id(question.getUuid()).status("QUESTION EDITED");
+        return new ResponseEntity<QuestionEditResponse>(questionEditResponse,HttpStatus.OK);
+    }
 }
+
 
 
