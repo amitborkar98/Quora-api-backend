@@ -20,7 +20,7 @@ public class QuestionByUserBusinessService {
     UserDao userDao;
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public List<questionEntity> getQuestions(String authorizationToken,String userId)throws AuthorizationFailedException, UserNotFoundException{
+    public String[] getQuestions(String authorizationToken,String userId)throws AuthorizationFailedException, UserNotFoundException{
 
         userAuthEntity token = userDao.getUserAuthToken(authorizationToken);
         //if the access token is not there in the database, AuthorizationFailedException is thrown
@@ -37,6 +37,16 @@ public class QuestionByUserBusinessService {
             throw new UserNotFoundException("USR-001","User with entered uuid whose question details are to be seen does not exist");
         }
         //else the questions asked by a specific user are returned to the controller
-        return user.getQuestions();
+         List<questionEntity> questions = user.getQuestions();
+        String content = null;
+        String id = null;
+        String[] question = new String[2];
+        for(questionEntity q : questions){
+            content +=  q.getContent() + " , ";
+            id +=  q.getUuid() + " , " ;
+        }
+        question[0]=id;
+        question[1]=content;
+        return question;
     }
 }

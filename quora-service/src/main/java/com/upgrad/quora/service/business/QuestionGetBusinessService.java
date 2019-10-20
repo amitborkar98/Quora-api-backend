@@ -21,7 +21,7 @@ public class QuestionGetBusinessService {
     UserDao userDao;
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public List<questionEntity> getQuestions(String authorizationToken)throws AuthorizationFailedException{
+    public String [] getQuestions(String authorizationToken)throws AuthorizationFailedException{
 
         userAuthEntity token = userDao.getUserAuthToken(authorizationToken);
         //if the access token is not there in the database, AuthorizationFailedException is thrown
@@ -34,6 +34,15 @@ public class QuestionGetBusinessService {
         }
         //else the list of all the questions in the database is returned to the controller
         List<questionEntity> questions= questionDao.getQuestions();
-        return questions;
+        String content = null;
+        String id = null;
+        String[] question = new String[2];
+        for(questionEntity q : questions){
+            content +=  q.getContent() + " , ";
+            id +=  q.getUuid() + " , " ;
+        }
+        question[0]=id;
+        question[1]=content;
+        return question;
     }
 }

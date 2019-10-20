@@ -45,13 +45,10 @@ public class QuestionController {
     public ResponseEntity<QuestionDetailsResponse> getQuestions(@RequestHeader("authorization") final String authorization)
             throws AuthorizationFailedException {
 
-        List<questionEntity> questions = questionGetBusinessService.getQuestions(authorization);
+        String[] questions = questionGetBusinessService.getQuestions(authorization);
 
-        for (questionEntity s : questions) {
-            QuestionDetailsResponse questionDetailsResponse = new QuestionDetailsResponse().id(s.getUuid()).content(s.getContent());
-            return new ResponseEntity<QuestionDetailsResponse>(questionDetailsResponse, HttpStatus.OK);
-        }
-        return null;
+        QuestionDetailsResponse questionDetailsResponse = new QuestionDetailsResponse().id(questions[0]).content(questions[1]);
+        return new ResponseEntity<QuestionDetailsResponse>(questionDetailsResponse, HttpStatus.OK);
     }
 
     @Autowired
@@ -95,13 +92,9 @@ public class QuestionController {
                                                                      @PathVariable("userId") String userId)
             throws AuthorizationFailedException, UserNotFoundException {
 
-        List<questionEntity> userQuestions= questionByUserBusinessService.getQuestions(authorization,userId);
-
-        for (questionEntity s : userQuestions) {
-            QuestionDetailsResponse questionDetailsResponse = new QuestionDetailsResponse().id(s.getUuid()).content(s.getContent());
-            return new ResponseEntity<QuestionDetailsResponse>(questionDetailsResponse, HttpStatus.OK);
-        }
-        return null;
+        String[] userQuestions= questionByUserBusinessService.getQuestions(authorization,userId);
+        QuestionDetailsResponse questionDetailsResponse = new QuestionDetailsResponse().id(userQuestions[0]).content(userQuestions[1]);
+        return new ResponseEntity<QuestionDetailsResponse>(questionDetailsResponse, HttpStatus.OK);
     }
 }
 
