@@ -42,7 +42,7 @@ public class QuestionController {
     QuestionGetBusinessService questionGetBusinessService;
 
     @RequestMapping(method = RequestMethod.GET, path = "/question/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<QuestionDetailsResponse> getQuestions(@RequestHeader("authorization") final String authorization)
+    public ResponseEntity<QuestionDetailsResponse> getAllQuestions(@RequestHeader("authorization") final String authorization)
             throws AuthorizationFailedException {
 
         String[] questions = questionGetBusinessService.getQuestions(authorization);
@@ -69,7 +69,7 @@ public class QuestionController {
     QuestionEditService questionEditService;
 
     @RequestMapping(method = RequestMethod.PUT,path = "/question/edit/{questionId}",produces =MediaType.APPLICATION_JSON_UTF8_VALUE )
-    public ResponseEntity<QuestionEditResponse> editQuestion(final QuestionEditRequest questionEditRequest,
+    public ResponseEntity<QuestionEditResponse> editQuestionContent(final QuestionEditRequest questionEditRequest,
                                                              @RequestHeader("authorization") final String authorization,
                                                              @PathVariable("questionId") String questionId)
             throws AuthorizationFailedException, InvalidQuestionException {
@@ -88,7 +88,7 @@ public class QuestionController {
     QuestionByUserBusinessService questionByUserBusinessService;
 
     @RequestMapping(method = RequestMethod.GET, path = "/question/all/{userId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<QuestionDetailsResponse> getQuestionOfUser(@RequestHeader("authorization") final String authorization,
+    public ResponseEntity<QuestionDetailsResponse> getAllQuestionByUser(@RequestHeader("authorization") final String authorization,
                                                                      @PathVariable("userId") String userId)
             throws AuthorizationFailedException, UserNotFoundException {
 
