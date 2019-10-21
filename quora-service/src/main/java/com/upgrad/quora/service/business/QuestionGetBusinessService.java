@@ -34,8 +34,8 @@ public class QuestionGetBusinessService {
         }
         //else the list of all the questions in the database is returned to the controller
         List<questionEntity> questions= questionDao.getQuestions();
-        String content = null;
-        String id = null;
+        String content = " ";
+        String id = " ";
         String[] question = new String[2];
         for(questionEntity q : questions){
             content +=  q.getContent() + " , ";

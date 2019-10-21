@@ -38,8 +38,8 @@ public class QuestionByUserBusinessService {
         }
         //else the questions asked by a specific user are returned to the controller
          List<questionEntity> questions = user.getQuestions();
-        String content = null;
-        String id = null;
+        String content = " ";
+        String id = " ";
         String[] question = new String[2];
         for(questionEntity q : questions){
             content +=  q.getContent() + " , ";

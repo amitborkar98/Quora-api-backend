@@ -82,8 +82,8 @@ public class AnswerController {
             throws AuthorizationFailedException,InvalidQuestionException{
 
         List<answerEntity> answers = answerGetAllBusinessService.getAnswers(authorization,questionId);
-        String content = null;
-        String id = null;
+        String content = " ";
+        String id = " ";
         String[] ans = new String[2];
         for(answerEntity q : answers){
             content +=  q.getAnswer() + " , ";
@@ -91,9 +91,9 @@ public class AnswerController {
         }
         ans[0]=id;
         ans[1]=content;
-
+        String question =answers.get(0).getQuestion().getContent();
         AnswerDetailsResponse answerDetailsResponse=new AnswerDetailsResponse().id(ans[0]).
-                questionContent(answers.get(0).getQuestion().getContent()).answerContent(ans[1]);
+                questionContent(question).answerContent(ans[1]);
         return new ResponseEntity<AnswerDetailsResponse>(answerDetailsResponse,HttpStatus.OK);
     }
 }
