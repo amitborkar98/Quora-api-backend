@@ -1,10 +1,9 @@
 package com.upgrad.quora.api.controller;
 
-import com.upgrad.quora.api.model.AnswerDeleteResponse;
-import com.upgrad.quora.api.model.AnswerRequest;
-import com.upgrad.quora.api.model.AnswerResponse;
+import com.upgrad.quora.api.model.*;
 import com.upgrad.quora.service.business.AnswerCreateBusinessService;
 import com.upgrad.quora.service.business.AnswerDeleteBusinessService;
+import com.upgrad.quora.service.business.AnswerEditBusinessService;
 import com.upgrad.quora.service.exception.AnswerNotFoundException;
 import com.upgrad.quora.service.exception.AuthorizationFailedException;
 import com.upgrad.quora.service.exception.InvalidQuestionException;
@@ -52,5 +51,23 @@ public class AnswerController {
 
         AnswerDeleteResponse answerDeleteResponse=new AnswerDeleteResponse().id(answer.getUuid()).status("ANSWER DELETED");
         return new ResponseEntity<AnswerDeleteResponse>(answerDeleteResponse,HttpStatus.OK);
+    }
+
+    @Autowired
+    AnswerEditBusinessService answerEditBusinessService;
+
+    @RequestMapping(method = RequestMethod.PUT,path ="answer/edit/{answerId}",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public  ResponseEntity<AnswerEditResponse> editAnswer(@RequestHeader("authorization") final String authorization,
+                                                          @PathVariable("answerId")String answerId, final AnswerEditRequest answerEditRequest)
+            throws AuthorizationFailedException,AnswerNotFoundException{
+
+        answerEntity answer = new answerEntity();
+        answer.setUuid(answerId);
+        answer.setAnswer(answerEditRequest.getContent());
+
+        answerEntity updatedAnswer = answerEditBusinessService.update(authorization, answer);
+
+        AnswerEditResponse answerEditResponse=new AnswerEditResponse().id(updatedAnswer.getUuid()).status("ANSWER EDITED");
+        return new ResponseEntity<AnswerEditResponse>(answerEditResponse,HttpStatus.OK);
     }
 }
