@@ -35,6 +35,7 @@ public class QuestionDeleteService {
         }
         userEntity user =token.getUser();
         questionEntity question = questionDao.getQuestionById(id);
+        //if question does not exist in the database,InvalidQuestionException is thrown
         if(question==null){
             throw new InvalidQuestionException("QUES-001","Entered question uuid does not exist");
         }

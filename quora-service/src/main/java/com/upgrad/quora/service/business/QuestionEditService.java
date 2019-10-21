@@ -37,6 +37,7 @@ public class QuestionEditService {
         }
         userEntity user =token.getUser();
         questionEntity question = questionDao.getQuestionById(editQuestion.getUuid());
+        //if question does not exist in the database,InvalidQuestionException is thrown
         if(question==null){
             throw new InvalidQuestionException("QUES-001","Entered question uuid does not exist");
         }

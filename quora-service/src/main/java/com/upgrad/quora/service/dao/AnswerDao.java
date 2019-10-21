@@ -19,7 +19,7 @@ public class AnswerDao {
     }
 
     //this method is used to get the Answer by uuid
-    public answerEntity getQuestionById(String uuid){
+    public answerEntity getAnswerById(String uuid){
         try {
             return entityManager.createNamedQuery("answerById", answerEntity.class).setParameter("uuid", uuid).getSingleResult();
         } catch (NoResultException nre) {
@@ -28,12 +28,12 @@ public class AnswerDao {
     }
 
     //this method is used to delete the answer
-    public void deleteQuestion(answerEntity answer){
+    public void deleteAnswer(answerEntity answer){
         entityManager.remove(answer);
     }
 
     //this method is used to update the answer
-    public void updateQuestion(answerEntity answer){
+    public void updateAnswer(answerEntity answer){
         entityManager.merge(answer);
     }
 
